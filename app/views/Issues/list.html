@@ -1,0 +1,9 @@
+{{set . "title" "Issue.Show"}}
+{{template "header.html" .}}
+
+{{range .issues}}
+<div>{{.Id}} : {{.Title}}</div>
+
+{{end}}
+
+{{template "footer.html" .}}
