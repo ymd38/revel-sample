@@ -7,6 +7,7 @@ import (
 
 	"github.com/go-gorp/gorp"
 	_ "github.com/go-sql-driver/mysql"
+	"github.com/revel/modules/db/app"
 	r "github.com/revel/revel"
 )
 
@@ -15,14 +16,8 @@ var (
 )
 
 func InitDB() {
-	fmt.Println("gorp.go:InitDB")
-	//db.Init()
-	//Dbm = &gorp.DbMap{Db: db.Db, Dialect: gorp.MySQLDialect{}}
-	db, err := sql.Open("mysql", "root:root@/sample")
-	if err != nil {
-		panic(err.Error())
-	}
-	Dbm = &gorp.DbMap{Db: db, Dialect: gorp.MySQLDialect{"InnoDB", "UTF8"}}
+	db.Init()
+	Dbm = &gorp.DbMap{Db: db.Db, Dialect: gorp.MySQLDialect{"InnoDB", "UTF8"}}
 
 	setColumnSizes := func(t *gorp.TableMap, colSizes map[string]int) {
 		for col, size := range colSizes {
