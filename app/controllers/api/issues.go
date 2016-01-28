@@ -67,6 +67,7 @@ func getIssues(condition string) []models.Issue {
 		issues[cnt].Id = issue.Id
 		issues[cnt].Title = issue.Title
 		issues[cnt].Source = issue.Source
+		issues[cnt].Detail = issue.Detail
 		cnt++
 	}
 	return issues
