@@ -18,7 +18,7 @@ func (c ApiIssues) Create() revel.Result {
 
 	issue.Validate(c.App.Validation)
 	if c.App.Validation.HasErrors() {
-		return c.App.RenderJson(&ErrorResponse{1, "Validate Error"})
+		return c.App.RenderJson(&ErrorResponse{ERR_VALIDATE, ErrorMessage(ERR_VALIDATE)})
 	}
 
 	err := c.Txn.Insert(issue)
@@ -26,7 +26,7 @@ func (c ApiIssues) Create() revel.Result {
 		panic(err)
 	}
 
-	return c.App.RenderJson(&Response{0, issue})
+	return c.App.RenderJson(&Response{OK, issue})
 }
 
 func (c ApiIssues) Update(id int) revel.Result {
@@ -36,7 +36,7 @@ func (c ApiIssues) Update(id int) revel.Result {
 
 	issue.Validate(c.App.Validation)
 	if c.App.Validation.HasErrors() {
-		return c.App.RenderJson(&ErrorResponse{1, "Validate Error"})
+		return c.App.RenderJson(&ErrorResponse{ERR_VALIDATE, ErrorMessage(ERR_VALIDATE)})
 	}
 
 	_, err := c.Txn.Update(issue)
@@ -44,17 +44,17 @@ func (c ApiIssues) Update(id int) revel.Result {
 		panic(err)
 	}
 
-	return c.App.RenderJson(&Response{0, issue})
+	return c.App.RenderJson(&Response{OK, issue})
 }
 
 func (c ApiIssues) Show(id int) revel.Result {
 	issues := getIssues("where id=" + strconv.Itoa(id))
-	return c.App.RenderJson(&Response{0, issues})
+	return c.App.RenderJson(&Response{OK, issues})
 }
 
 func (c ApiIssues) List(q string) revel.Result {
 	issues := getIssues("")
-	return c.App.RenderJson(&Response{0, issues})
+	return c.App.RenderJson(&Response{OK, issues})
 }
 
 func getIssues(condition string) []models.Issue {

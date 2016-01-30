@@ -25,6 +25,13 @@ type ErrorResponse struct {
 	Message string `json:"message"`
 }
 
+const (
+	OK int = iota
+	WARN_NOT_FOUND
+	ERR_VALIDATE
+	ERR_SYSTEM
+)
+
 func init() {
 	//authはinit.goで行うので不要かも
 	//revel.InterceptMethod(controllers.App.Auth, revel.BEFORE)
@@ -48,4 +55,21 @@ func JsonDecode(i io.Reader, s interface{}) error {
 	}
 
 	return json.Unmarshal(bytes, s)
+}
+
+func (c ErrorResponse) String() string {
+	return ErrorMessage(c.Code)
+}
+
+func ErrorMessage(code int) string {
+	switch code {
+	case WARN_NOT_FOUND:
+		return "not found"
+	case ERR_VALIDATE:
+		return "validate error"
+	case ERR_SYSTEM:
+		return "system error"
+	default:
+		return "system error"
+	}
 }
