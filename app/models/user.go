@@ -4,7 +4,7 @@ import "github.com/revel/revel"
 
 type User struct {
 	Id       int    `json:"id"`
-	Mail     string `json:"mail"`
+	Name     string `json:"name"`
 	Password string `json:"password"`
 
 	//LimitDate   time.Time
@@ -13,7 +13,7 @@ type User struct {
 }
 
 func (user User) Validate(v *revel.Validation) {
-	v.Required(user.Mail)
+	v.Required(user.Name)
 	v.Required(user.Password)
 	/*
 		v.Match(booking.CardNumber, regexp.MustCompile(`\d{16}`)).

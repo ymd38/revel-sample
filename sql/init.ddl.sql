@@ -14,4 +14,13 @@ CREATE TABLE IF NOT EXISTS `issue` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='脆弱性情報';
 
+CREATE TABLE IF NOT EXISTS `user` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `name` varchar(1024) NOT NULL COMMENT 'ユーザ名',
+  `password` varchar(1024) NOT NULL COMMENT 'パスワード',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='ユーザー';
+
+--GRANT SELECT, INSERT, UPDATE, DELETE ON issue_management.* TO 'issue_manager'@'localhost' IDENTIFIED BY 'Example_passwd123_';
+
 -- CREATE INDEX issue_emergency_no_complite ON issue(`title`);
