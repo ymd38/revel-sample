@@ -2,7 +2,6 @@ package controllers
 
 import (
 	"database/sql"
-	"fmt"
 	"security-cop/app/models"
 
 	"github.com/go-gorp/gorp"
@@ -41,7 +40,6 @@ type GorpController struct {
 }
 
 func (c *GorpController) Begin() r.Result {
-	fmt.Println("Begin")
 	txn, err := Dbm.Begin()
 	if err != nil {
 		panic(err)
