@@ -17,21 +17,9 @@ var (
 func InitDB() {
 	db.Init()
 	Dbm = &gorp.DbMap{Db: db.Db, Dialect: gorp.MySQLDialect{"InnoDB", "UTF8"}}
-
-	setColumnSizes := func(t *gorp.TableMap, colSizes map[string]int) {
-		for col, size := range colSizes {
-			t.ColMap(col).MaxSize = size
-		}
-	}
-
-	t := Dbm.AddTable(models.Issue{}).SetKeys(true, "Id")
-	setColumnSizes(t, map[string]int{
-		"Title":  256,
-		"Source": 1024,
-	})
-
 	Dbm.TraceOn("[gorp]", r.INFO)
-	Dbm.CreateTables()
+	Dbm.AddTable(models.Issue{}).SetKeys(true, "Id")
+	Dbm.AddTable(models.User{}).SetKeys(true, "Id")
 }
 
 type GorpController struct {
