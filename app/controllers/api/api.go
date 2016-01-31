@@ -57,7 +57,7 @@ func JsonDecode(i io.Reader, s interface{}) error {
 	return json.Unmarshal(bytes, s)
 }
 
-func (c ErrorResponse) String() string {
+func (c *ErrorResponse) String() string {
 	return ErrorMessage(c.Code)
 }
 

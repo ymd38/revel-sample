@@ -10,7 +10,7 @@ type ApiUser struct {
 	ApiController
 }
 
-func (c ApiUser) Create() revel.Result {
+func (c *ApiUser) Create() revel.Result {
 	user := &models.User{}
 	c.BindParams(user)
 

@@ -6,26 +6,29 @@ type App struct {
 	*revel.Controller
 }
 
-func (c App) Index() revel.Result {
+func (c *App) Index() revel.Result {
 	return c.Render()
 }
 
-/*
-func (c App) login(username, password string) revel.Result {
-	err := bcrypt.CompareHashAndPassword(user.HashedPassword, []byte(password))
-			if err == nil {
-				c.Session["user"] = username
+func (c *App) login(username, password string) revel.Result {
+	/*
+		err := bcrypt.CompareHashAndPassword(user.HashedPassword, []byte(password))
+		if err == nil {
+			c.Session["user"] = username
+		}
 
-hashedpassword, _ := bcrypt.GenerateFromPassword(
-	[]byte(password), bcrypt.DefaultCost)
+		hashedpassword, _ := bcrypt.GenerateFromPassword(
+			[]byte(password), bcrypt.DefaultCost)
 
-//err := bcrypt.CompareHashAndPassword(user.HashedPassword, []byte(password))
+		err := bcrypt.CompareHashAndPassword(user.HashedPassword, []byte(password))
 
-c.Session["user"] = username
-c.Session.SetDefaultExpiration()
-*/
+		c.Session["user"] = username
+		c.Session.SetDefaultExpiration()
+	*/
+	return nil
+}
 
-func (c App) Auth() revel.Result {
+func (c *App) Auth() revel.Result {
 
 	if username, ok := c.Session["user"]; ok {
 		revel.INFO.Println(username)

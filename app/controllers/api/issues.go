@@ -12,7 +12,7 @@ type ApiIssues struct {
 	ApiController
 }
 
-func (c ApiIssues) Create() revel.Result {
+func (c *ApiIssues) Create() revel.Result {
 	issue := &models.Issue{}
 	c.BindParams(issue)
 
@@ -29,7 +29,7 @@ func (c ApiIssues) Create() revel.Result {
 	return c.App.RenderJson(&Response{OK, issue})
 }
 
-func (c ApiIssues) Update(id int) revel.Result {
+func (c *ApiIssues) Update(id int) revel.Result {
 	issue := &models.Issue{}
 	c.BindParams(issue)
 	issue.Id = id
@@ -47,12 +47,12 @@ func (c ApiIssues) Update(id int) revel.Result {
 	return c.App.RenderJson(&Response{OK, issue})
 }
 
-func (c ApiIssues) Show(id int) revel.Result {
+func (c *ApiIssues) Show(id int) revel.Result {
 	issues := getIssues("where id=" + strconv.Itoa(id))
 	return c.App.RenderJson(&Response{OK, issues})
 }
 
-func (c ApiIssues) List(q string) revel.Result {
+func (c *ApiIssues) List(q string) revel.Result {
 	issues := getIssues("")
 	return c.App.RenderJson(&Response{OK, issues})
 }

@@ -14,7 +14,7 @@ type Issues struct {
 	*revel.Controller
 }
 
-func (c Issues) Show(id int) revel.Result {
+func (c *Issues) Show(id int) revel.Result {
 	fmt.Printf("%d\n", id)
 	rows, _ := Dbm.Select(models.Issue{}, "select * from issue where id="+strconv.Itoa(id))
 	for _, row := range rows {
@@ -25,7 +25,7 @@ func (c Issues) Show(id int) revel.Result {
 	return nil
 }
 
-func (c Issues) List() revel.Result {
+func (c *Issues) List() revel.Result {
 	rows, _ := Dbm.Select(models.Issue{}, "select * from issue")
 	var issues []*models.Issue
 	for _, row := range rows {
