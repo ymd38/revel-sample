@@ -72,7 +72,9 @@ func getIssues(condition string) []models.Issue {
 		issues[cnt].Title = issue.Title
 		issues[cnt].Source = issue.Source
 		issues[cnt].Detail = issue.Detail
-		//TODO:時間の扱いを共通化
+		issues[cnt].Priority = issue.Priority
+		issues[cnt].Status = issue.Status
+		issues[cnt].Limit = issue.Limit
 		issues[cnt].CreatedStr = util.UnitTimeToString(issue.Created)
 		issues[cnt].UpdatedStr = util.UnitTimeToString(issue.Updated)
 		cnt++
