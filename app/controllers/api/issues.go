@@ -3,6 +3,7 @@ package controllers
 import (
 	"security-cop/app/controllers"
 	"security-cop/app/models"
+	"security-cop/app/util"
 	"strconv"
 	"time"
 
@@ -72,8 +73,8 @@ func getIssues(condition string) []models.Issue {
 		issues[cnt].Source = issue.Source
 		issues[cnt].Detail = issue.Detail
 		//TODO:時間の扱いを共通化
-		issues[cnt].CreatedStr = time.Unix(issue.Created, 0).Format("2006-01-02 15:04:05")
-		issues[cnt].UpdatedStr = time.Unix(issue.Updated, 0).Format("2006-01-02 15:04:05")
+		issues[cnt].CreatedStr = util.UnitTimeToString(issue.Created)
+		issues[cnt].UpdatedStr = util.UnitTimeToString(issue.Updated)
 		cnt++
 	}
 	return issues
