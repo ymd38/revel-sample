@@ -4,6 +4,7 @@ import (
 	"security-cop/app/controllers"
 	"security-cop/app/models"
 	"strconv"
+	"time"
 
 	"github.com/revel/revel"
 )
@@ -21,6 +22,8 @@ func (c *ApiIssues) Create() revel.Result {
 		return c.App.RenderJson(&ErrorResponse{ERR_VALIDATE, ErrorMessage(ERR_VALIDATE)})
 	}
 
+	issue.Created = time.Now().Unix()
+	issue.Updated = time.Now().Unix()
 	err := c.Txn.Insert(issue)
 	if err != nil {
 		panic(err)
@@ -68,6 +71,9 @@ func getIssues(condition string) []models.Issue {
 		issues[cnt].Title = issue.Title
 		issues[cnt].Source = issue.Source
 		issues[cnt].Detail = issue.Detail
+		//TODO:時間の扱いを共通化
+		issues[cnt].CreatedStr = time.Unix(issue.Created, 0).Format("2006-01-02 15:04:05")
+		issues[cnt].UpdatedStr = time.Unix(issue.Updated, 0).Format("2006-01-02 15:04:05")
 		cnt++
 	}
 	return issues

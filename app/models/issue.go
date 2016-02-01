@@ -3,13 +3,14 @@ package models
 import "github.com/revel/revel"
 
 type Issue struct {
-	Id     int    `json:"id"`
-	Title  string `json:"title"`
-	Source string `json:"source"`
-	Detail string `json:"detail"`
-	//LimitDate   time.Time
-	//CreatedDate time.Time
-	//UpdatedDate time.Time
+	Id         int    `json:"id"`
+	Title      string `json:"title"`
+	Source     string `json:"source"`
+	Detail     string `json:"detail"`
+	Created    int64  `json:"-"`
+	CreatedStr string `json:"created,omitempty" db:"-"`
+	Updated    int64  `json:"-"`
+	UpdatedStr string `json:"updated,omitempty" db:"-"`
 }
 
 func (issue Issue) Validate(v *revel.Validation) {
