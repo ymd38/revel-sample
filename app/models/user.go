@@ -12,7 +12,7 @@ type User struct {
 	//UpdatedDate time.Time
 }
 
-func (user User) Validate(v *revel.Validation) {
+func (user *User) Validate(v *revel.Validation) {
 	v.Required(user.Name)
 	v.Required(user.Password)
 	/*

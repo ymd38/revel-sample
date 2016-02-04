@@ -12,6 +12,7 @@ GET     /                                       App.Index
 
 GET  /api/issues/:id      ApiIssues.Show
 GET  /api/issues          ApiIssues.List
+GET  /api/issues/service/:serviceid ApiIssues.Service
 POST /api/issues          ApiIssues.Create
 POST /api/issues/:id      ApiIssues.Update
 

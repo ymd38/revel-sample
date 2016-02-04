@@ -16,7 +16,7 @@ type Issue struct {
 	UpdatedStr string `json:"updated,omitempty" db:"-"`
 }
 
-func (issue Issue) Validate(v *revel.Validation) {
+func (issue *Issue) Validate(v *revel.Validation) {
 	v.Check(
 		issue.Title,
 		revel.Required{},
@@ -52,4 +52,16 @@ func (issue Issue) Validate(v *revel.Validation) {
 		issue.Limit,
 		revel.Required{},
 	)
+}
+
+/* サービス毎の対応状況 */
+type ServiceIssueView struct {
+	ServiceID      int    `json:"-"`
+	IssueId        int    `json:"issue_id"`
+	IssueTitle     string `json:"issue_title"`
+	IssuePriority  string `json:issue_priority`
+	StatusCode     int    `json:"status_code"`
+	Status         string `json:"status" db:"-"`
+	ReflectDate    int64  `json:"-"`
+	ReflectDateStr string `json:"ReflectDate,omitempty" db:"-"`
 }
