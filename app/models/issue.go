@@ -7,9 +7,10 @@ type Issue struct {
 	Title      string `json:"title"`
 	Source     string `json:"source"`
 	Detail     string `json:"detail"`
-	Priority   int    `json:"priority"` //対応状況(0:重要, 1:緊急, 2:その他)',
-	Status     int    `json:"status"`   //`対応状況(0:完了, 1:未対応)',
-	Limit      string `json:"limit"`    //期限日 YYYYMMDD
+	Priority   int    `json:"priority"`     //対応状況(0:重要, 1:緊急, 2:その他)',
+	Status     int    `json:"status"`       //`対応状況(0:完了, 1:未対応)',
+	Limit      int64  `json:"-"`            //期限日 YYYYMMDD
+	LimitStr   string `json:"limit" db:"-"` //期限日 YYYYMMDD
 	Created    int64  `json:"-"`
 	CreatedStr string `json:"created,omitempty" db:"-"`
 	Updated    int64  `json:"-"`
@@ -56,12 +57,13 @@ func (issue *Issue) Validate(v *revel.Validation) {
 
 /* サービス毎の対応状況 */
 type ServiceIssueView struct {
-	ServiceID      int    `json:"-"`
-	IssueId        int    `json:"issue_id"`
-	IssueTitle     string `json:"issue_title"`
-	IssuePriority  string `json:issue_priority`
-	StatusCode     int    `json:"status_code"`
-	Status         string `json:"status" db:"-"`
-	ReflectDate    int64  `json:"-"`
-	ReflectDateStr string `json:"ReflectDate,omitempty" db:"-"`
+	ServiceID        int    `json:"-"`
+	IssueId          int    `json:"issue_id"`
+	IssueTitle       string `json:"issue_title"`
+	IssuePriority    int    `json:"-"`
+	IssuePriorityStr string `json:"issue_priority" db:"-"`
+	StatusCode       int    `json:"-"`
+	Status           string `json:"status" db:"-"`
+	ReflectDate      int64  `json:"-"`
+	ReflectDateStr   string `json:"ReflectDate,omitempty" db:"-"`
 }
