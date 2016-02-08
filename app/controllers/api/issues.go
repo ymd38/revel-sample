@@ -71,39 +71,6 @@ func (c *ApiIssues) List(q string) revel.Result {
 
 //list issues of service
 func (c *ApiIssues) Service(serviceid int, status string) revel.Result {
-	/*
-		condition := " where s.serviceid=" + strconv.Itoa(serviceid)
-		if status != "" {
-			c.App.Validation.Match(status, regexp.MustCompile("[0-9]"))
-			if c.App.Validation.HasErrors() {
-				return c.App.RenderJson(&ErrorResponse{ERR_VALIDATE, ErrorMessage(ERR_VALIDATE)})
-			}
-			condition += " and s.status=" + status
-		}
-
-		sql := SERVICE_ISSUE_SQL + condition
-		rows, err := controllers.Dbm.Select(models.ServiceIssueView{}, sql)
-		if err != nil {
-			panic(err)
-		}
-
-		issues := make([]models.ServiceIssueView, len(rows))
-		cnt := 0
-		for _, row := range rows {
-			issue := row.(*models.ServiceIssueView)
-			issues[cnt].IssueId = issue.IssueId
-			issues[cnt].IssueTitle = issue.IssueTitle
-			issues[cnt].IssuePriorityStr = util.GetPriority(issue.IssuePriority)
-			issues[cnt].StatusCode = issue.StatusCode
-			issues[cnt].Status = util.GetStatus(issue.StatusCode)
-			if issue.ReflectDate > 0 {
-				issues[cnt].ReflectDateStr = util.UnitTimeToDayString(issue.ReflectDate)
-			}
-
-			cnt++
-		}
-
-		return c.App.RenderJson(&Response{OK, issues})
-	*/
-	return nil
+	issue_list := c.Issue.GetServiceIssueList(serviceid, status)
+	return c.App.RenderJson(&Response{OK, issue_list})
 }
