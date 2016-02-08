@@ -1,8 +1,7 @@
-package controllers
+package models
 
 import (
 	"database/sql"
-	"security-cop/app/models"
 
 	"github.com/go-gorp/gorp"
 	_ "github.com/go-sql-driver/mysql"
@@ -18,8 +17,8 @@ func InitDB() {
 	db.Init()
 	Dbm = &gorp.DbMap{Db: db.Db, Dialect: gorp.MySQLDialect{"InnoDB", "UTF8"}}
 	Dbm.TraceOn("[gorp]", r.INFO)
-	Dbm.AddTable(models.Issue{}).SetKeys(true, "Id")
-	Dbm.AddTable(models.User{}).SetKeys(true, "Id")
+	//	Dbm.AddTable(IssueData{}).SetKeys(true, "Id")
+	//	Dbm.AddTable(UserData{}).SetKeys(true, "Id")
 }
 
 type GorpController struct {

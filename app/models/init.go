@@ -1,4 +1,4 @@
-package controllers
+package models
 
 import "github.com/revel/revel"
 

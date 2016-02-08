@@ -1,6 +1,6 @@
 package util
 
-/* status code */
+/* issue progress status code */
 const (
 	STATUS_COMPLITE int = iota
 	STATUS_NOCHECK

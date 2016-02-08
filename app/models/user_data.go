@@ -2,7 +2,7 @@ package models
 
 import "github.com/revel/revel"
 
-type User struct {
+type UserData struct {
 	Id       int    `json:"id"`
 	Name     string `json:"name"`
 	Password string `json:"password"`
@@ -12,7 +12,7 @@ type User struct {
 	//UpdatedDate time.Time
 }
 
-func (user *User) Validate(v *revel.Validation) {
+func (user *UserData) Validate(v *revel.Validation) {
 	v.Required(user.Name)
 	v.Required(user.Password)
 	/*

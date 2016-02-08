@@ -6,13 +6,10 @@ import (
 	"io"
 	"io/ioutil"
 	"security-cop/app/controllers"
-
-	"github.com/revel/revel"
 )
 
 type ApiController struct {
 	controllers.App
-	controllers.GorpController
 }
 
 type Response struct {
@@ -25,20 +22,13 @@ type ErrorResponse struct {
 	Message string `json:"message"`
 }
 
+/* api response code */
 const (
 	OK int = iota
 	WARN_NOT_FOUND
 	ERR_VALIDATE
 	ERR_SYSTEM
 )
-
-func init() {
-	//authはinit.goで行うので不要かも
-	//revel.InterceptMethod(controllers.App.Auth, revel.BEFORE)
-	revel.InterceptMethod((*controllers.GorpController).Begin, revel.BEFORE)
-	revel.InterceptMethod((*controllers.GorpController).Commit, revel.AFTER)
-	revel.InterceptMethod((*controllers.GorpController).Rollback, revel.FINALLY)
-}
 
 func (c *ApiController) BindParams(s interface{}) error {
 	return JsonDecode(c.App.Request.Body, s)
