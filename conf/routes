@@ -16,6 +16,10 @@ GET  /api/issues/service/:serviceid ApiIssues.Service
 POST /api/issues          ApiIssues.Create
 POST /api/issues/:id      ApiIssues.Update
 
+GET  /api/services          ApiServices.List
+GET  /api/services/:id      ApiServices.Show
+
+
 POST /api/user          ApiUser.Create
 
 # Ignore favicon requests
