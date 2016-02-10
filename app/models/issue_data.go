@@ -1,6 +1,11 @@
 package models
 
-import "github.com/revel/revel"
+import (
+	"regexp"
+	"strconv"
+
+	"github.com/revel/revel"
+)
 
 type IssueData struct {
 	Id         int    `json:"id"`
@@ -23,36 +28,36 @@ func (issuedata *IssueData) Validate(v *revel.Validation) {
 		revel.Required{},
 		revel.MaxSize{1024},
 		revel.MinSize{1},
-	)
+	).Message("titel is validate error")
 
 	v.Check(
 		issuedata.Source,
 		revel.Required{},
 		revel.MaxSize{1024},
 		revel.MinSize{1},
-	)
+	).Message("source is validate error")
 
 	v.Check(
 		issuedata.Detail,
 		revel.Required{},
 		revel.MaxSize{5120},
 		revel.MinSize{1},
-	)
+	).Message("detail is validate error")
 
 	v.Check(
 		issuedata.Priority,
 		revel.Required{},
-	)
+	).Message("priority is validate error")
 
-	v.Check(
-		issuedata.Status,
-		revel.Required{},
-	)
+	v.Match(strconv.Itoa(issuedata.Status), regexp.MustCompile(`\d{1}`)).Message("status is validate error")
+	v.Match(issuedata.LimitStr, regexp.MustCompile(`\d{8}`)).Message("limit is validate error")
 
-	v.Check(
-		issuedata.Limit,
-		revel.Required{},
-	)
+	if v.HasErrors() {
+		errmap := v.ErrorMap()
+		for e := range errmap {
+			revel.ERROR.Println(e)
+		}
+	}
 }
 
 /* サービス毎の対応状況 */

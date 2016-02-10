@@ -11,19 +11,19 @@ import (
 
 var (
 	Dbm *gorp.DbMap
+	Txn *gorp.Transaction
 )
 
 func InitDB() {
 	db.Init()
 	Dbm = &gorp.DbMap{Db: db.Db, Dialect: gorp.MySQLDialect{"InnoDB", "UTF8"}}
 	Dbm.TraceOn("[gorp]", r.INFO)
-	//	Dbm.AddTable(IssueData{}).SetKeys(true, "Id")
-	//	Dbm.AddTable(UserData{}).SetKeys(true, "Id")
+	Dbm.AddTableWithName(IssueData{}, "issue").SetKeys(true, "Id")
+	Dbm.AddTableWithName(UserData{}, "user").SetKeys(true, "Id")
 }
 
 type GorpController struct {
 	*r.Controller
-	Txn *gorp.Transaction
 }
 
 func (c *GorpController) Begin() r.Result {
@@ -31,28 +31,28 @@ func (c *GorpController) Begin() r.Result {
 	if err != nil {
 		panic(err)
 	}
-	c.Txn = txn
+	Txn = txn
 	return nil
 }
 
 func (c *GorpController) Commit() r.Result {
-	if c.Txn == nil {
+	if Txn == nil {
 		return nil
 	}
-	if err := c.Txn.Commit(); err != nil && err != sql.ErrTxDone {
+	if err := Txn.Commit(); err != nil && err != sql.ErrTxDone {
 		panic(err)
 	}
-	c.Txn = nil
+	Txn = nil
 	return nil
 }
 
 func (c *GorpController) Rollback() r.Result {
-	if c.Txn == nil {
+	if Txn == nil {
 		return nil
 	}
-	if err := c.Txn.Rollback(); err != nil && err != sql.ErrTxDone {
+	if err := Txn.Rollback(); err != nil && err != sql.ErrTxDone {
 		panic(err)
 	}
-	c.Txn = nil
+	Txn = nil
 	return nil
 }

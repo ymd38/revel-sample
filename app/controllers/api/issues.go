@@ -15,45 +15,21 @@ type ApiIssues struct {
 //insert issue data
 func (c *ApiIssues) Create() revel.Result {
 	issue_data := &models.IssueData{}
-	c.BindParams(issue_data)
-
-	issue_data.Validate(c.App.Validation)
-	if c.App.Validation.HasErrors() {
+	if err := models.BindJsonParams(c.App.Request.Body, issue_data); err != nil {
 		return c.App.RenderJson(&ErrorResponse{ERR_VALIDATE, ErrorMessage(ERR_VALIDATE)})
 	}
 
-	/*  modelのinsertへ移行
-	//gorp doesn't support time type. we use unix time on DB.
-	issue.Created = time.Now().Unix()
-	issue.Updated = time.Now().Unix()
-	err := c.Txn.Insert(issue)
+	issue := &models.Issue{}
+	err := issue.Create(issue_data)
 	if err != nil {
-		panic(err)
+		return c.App.RenderJson(&ErrorResponse{ERR_VALIDATE, ErrorMessage(ERR_FATAL)})
 	}
 
-	return c.App.RenderJson(&Response{OK, issue})
-	*/
-	return nil
+	return c.App.RenderJson(&Response{OK, issue_data})
 }
 
 //update issue data
 func (c *ApiIssues) Update(id int) revel.Result {
-	issue_data := &models.IssueData{Id: id}
-	c.BindParams(issue_data)
-
-	issue_data.Validate(c.App.Validation)
-	if c.App.Validation.HasErrors() {
-		return c.App.RenderJson(&ErrorResponse{ERR_VALIDATE, ErrorMessage(ERR_VALIDATE)})
-	}
-
-	/* modelのupdateへ移行
-	_, err := c.Txn.Update(issue)
-	if err != nil {
-		panic(err)
-	}
-
-	return c.App.RenderJson(&Response{OK, issue})
-	*/
 	return nil
 }
 

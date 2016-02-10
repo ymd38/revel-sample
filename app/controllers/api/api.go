@@ -1,12 +1,7 @@
 /* API共通機能 */
 package controllers
 
-import (
-	"encoding/json"
-	"io"
-	"io/ioutil"
-	"security-cop/app/controllers"
-)
+import "security-cop/app/controllers"
 
 type ApiController struct {
 	controllers.App
@@ -27,25 +22,8 @@ const (
 	OK int = iota
 	WARN_NOT_FOUND
 	ERR_VALIDATE
-	ERR_SYSTEM
+	ERR_FATAL
 )
-
-func (c *ApiController) BindParams(s interface{}) error {
-	return JsonDecode(c.App.Request.Body, s)
-}
-
-func JsonDecode(i io.Reader, s interface{}) error {
-	bytes, err := ioutil.ReadAll(i)
-	if err != nil {
-		return nil
-	}
-
-	if len(bytes) == 0 {
-		return nil
-	}
-
-	return json.Unmarshal(bytes, s)
-}
 
 func (c *ErrorResponse) String() string {
 	return ErrorMessage(c.Code)
@@ -57,7 +35,7 @@ func ErrorMessage(code int) string {
 		return "not found"
 	case ERR_VALIDATE:
 		return "validate error"
-	case ERR_SYSTEM:
+	case ERR_FATAL:
 		return "system error"
 	default:
 		return "system error"

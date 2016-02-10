@@ -1,12 +1,36 @@
 package models
 
 import (
+	"errors"
 	"modeltest/app/util"
 	"regexp"
 	"strconv"
+	"time"
+
+	"github.com/revel/revel"
 )
 
 type Issue struct {
+	GorpController
+}
+
+func (issue *Issue) Create(issue_data *IssueData) error {
+	var v revel.Validation
+	issue_data.Validate(&v)
+	if v.HasErrors() {
+		return errors.New("Validate Error")
+	}
+
+	//gorp doesn't support time type. we use unix time on DB.
+	issue_data.Created = time.Now().Unix()
+	issue_data.Updated = time.Now().Unix()
+
+	err := Txn.Insert(issue_data)
+	if err != nil {
+		return errors.New("System Error")
+	}
+
+	return nil
 }
 
 //common function for get issues
@@ -43,7 +67,6 @@ func (issue *Issue) GetServiceIssueList(serviceid int, status string) []ServiceI
 		r := regexp.MustCompile("^[0-9]$")
 		if !r.MatchString(status) {
 			return nil
-			//return c.App.RenderJson(&ErrorResponse{ERR_VALIDATE, ErrorMessage(ERR_VALIDATE)})
 		}
 		condition += " and s.status=" + status
 	}
@@ -52,6 +75,7 @@ func (issue *Issue) GetServiceIssueList(serviceid int, status string) []ServiceI
 	rows, err := Dbm.Select(ServiceIssueView{}, sql)
 	if err != nil {
 		panic(err)
+		return nil
 	}
 
 	issue_list := make([]ServiceIssueView, len(rows))
