@@ -12,10 +12,10 @@ type IssueData struct {
 	Title      string `json:"title"`
 	Source     string `json:"source"`
 	Detail     string `json:"detail"`
-	Priority   int    `json:"priority"`     //対応状況(0:重要, 1:緊急, 2:その他)',
-	Status     int    `json:"status"`       //`対応状況(0:完了, 1:未対応)',
-	Limit      int64  `json:"-"`            //期限日 YYYYMMDD
-	LimitStr   string `json:"limit" db:"-"` //期限日 YYYYMMDD
+	Priority   int    `json:"priority"`
+	Status     int    `json:"status"`
+	Limit      int64  `json:"-"`
+	LimitStr   string `json:"limit" db:"-"`
 	Created    int64  `json:"-"`
 	CreatedStr string `json:"created,omitempty" db:"-"`
 	Updated    int64  `json:"-"`
