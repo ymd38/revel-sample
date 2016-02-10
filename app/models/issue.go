@@ -2,8 +2,8 @@ package models
 
 import (
 	"errors"
-	"modeltest/app/util"
 	"regexp"
+	"security-cop/app/util"
 	"strconv"
 	"time"
 
@@ -21,6 +21,7 @@ func (issue *Issue) Create(issue_data *IssueData) error {
 		return errors.New("Validate Error")
 	}
 
+	issue_data.Limit = util.DayStringToUnixTime(issue_data.LimitStr)
 	//gorp doesn't support time type. we use unix time on DB.
 	issue_data.Created = time.Now().Unix()
 	issue_data.Updated = time.Now().Unix()
@@ -47,9 +48,9 @@ func (issue *Issue) GetIssueList(condition string) []IssueData {
 		issue_list[cnt].Detail = issuedata.Detail
 		issue_list[cnt].Priority = issuedata.Priority
 		issue_list[cnt].Status = issuedata.Status
-		issue_list[cnt].LimitStr = util.UnitTimeToDayString(issuedata.Limit)
-		issue_list[cnt].CreatedStr = util.UnitTimeToDateString(issuedata.Created)
-		issue_list[cnt].UpdatedStr = util.UnitTimeToDateString(issuedata.Updated)
+		issue_list[cnt].LimitStr = util.UnixTimeToDayString(issuedata.Limit)
+		issue_list[cnt].CreatedStr = util.UnixTimeToDateString(issuedata.Created)
+		issue_list[cnt].UpdatedStr = util.UnixTimeToDateString(issuedata.Updated)
 		cnt++
 	}
 	return issue_list
@@ -88,7 +89,7 @@ func (issue *Issue) GetServiceIssueList(serviceid int, status string) []ServiceI
 		issue_list[cnt].StatusCode = issue_data.StatusCode
 		issue_list[cnt].Status = util.GetStatus(issue_data.StatusCode)
 		if issue_data.ReflectDate > 0 {
-			issue_list[cnt].ReflectDateStr = util.UnitTimeToDayString(issue_data.ReflectDate)
+			issue_list[cnt].ReflectDateStr = util.UnixTimeToDayString(issue_data.ReflectDate)
 		}
 
 		cnt++
