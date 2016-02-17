@@ -1,9 +1,9 @@
 package controllers
 
 import (
-	"fmt"
 	"security-cop/app/models"
 	"strconv"
+	"sync"
 
 	"github.com/revel/revel"
 )
@@ -54,11 +54,17 @@ func (c *ApiIssues) Service(serviceid int, status string) revel.Result {
 }
 
 func (c *ApiIssues) Relation(issueid int) revel.Result {
-	fmt.Println("id=", issueid)
+	var wg sync.WaitGroup
 	service_list := c.Issue.GetCreateTarget(issueid)
-	for service := range service_list {
-		fmt.Println(service)
+	serviceissue := &models.ServiceIssue{}
+	for i := 0; i < len(service_list); i++ {
+		wg.Add(1)
+		go func(iid int, sid int) {
+			defer wg.Done()
+			si_data := &models.ServiceIssueData{Id: 0, IssueId: iid, ServiceId: sid}
+			serviceissue.Create(si_data)
+		}(issueid, service_list[i].Id)
 	}
-
+	wg.Wait()
 	return nil
 }

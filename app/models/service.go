@@ -12,7 +12,7 @@ type Service struct {
 	GorpController
 }
 
-func (Service *Service) Create(service_data *ServiceData) error {
+func (service *Service) Create(service_data *ServiceData) error {
 	var v revel.Validation
 	service_data.Validate(&v)
 	if v.HasErrors() {
