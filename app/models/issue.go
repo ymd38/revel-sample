@@ -2,6 +2,7 @@ package models
 
 import (
 	"errors"
+	"fmt"
 	"regexp"
 	"security-cop/app/util"
 	"strconv"
@@ -56,13 +57,11 @@ func (issue *Issue) GetIssueList(condition string) []IssueData {
 	return issue_list
 }
 
-//sql template
-const SERVICE_ISSUE_SQL string = "SELECT" +
-	" s.serviceid ServiceID, i.id IssueId, i.title IssueTitle, i.priority IssuePriority, s.status StatusCode, s.reflectdate ReflectDate" +
-	" FROM service_issue s INNER JOIN issue i ON s.issueid = i.id"
-
 //list issues of service
 func (issue *Issue) GetServiceIssueList(serviceid int, status string) []ServiceIssueView {
+	sql_fmt := "SELECT" +
+		" s.serviceid ServiceID, i.id IssueId, i.title IssueTitle, i.priority IssuePriority, s.status StatusCode, s.reflectdate ReflectDate" +
+		" FROM service_issue s INNER JOIN issue i ON s.issueid = i.id"
 	condition := " where s.serviceid=" + strconv.Itoa(serviceid)
 	if status != "" {
 		r := regexp.MustCompile("^[0-9]$")
@@ -72,7 +71,7 @@ func (issue *Issue) GetServiceIssueList(serviceid int, status string) []ServiceI
 		condition += " and s.status=" + status
 	}
 
-	sql := SERVICE_ISSUE_SQL + condition
+	sql := sql_fmt + condition
 	rows, err := Dbm.Select(ServiceIssueView{}, sql)
 	if err != nil {
 		panic(err)
@@ -96,4 +95,20 @@ func (issue *Issue) GetServiceIssueList(serviceid int, status string) []ServiceI
 	}
 
 	return issue_list
+}
+
+func (issue *Issue) GetCreateTarget(issueid int) []ServiceData {
+	//sql := "select * from service where (start = 0 or start > %d) and (end = 0 or end < %d) and id != (select serviceid from service_issue where issueid=%d)"
+	sql := fmt.Sprintf("select * from service where id != (select serviceid from service_issue where issueid=%d)",
+		issueid)
+	rows, _ := Dbm.Select(ServiceData{}, sql)
+	service_list := make([]ServiceData, len(rows))
+	cnt := 0
+	for _, row := range rows {
+		servicedata := row.(*ServiceData)
+		service_list[cnt].Id = servicedata.Id
+		service_list[cnt].Name = servicedata.Name
+		cnt++
+	}
+	return service_list
 }

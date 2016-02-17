@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"fmt"
 	"security-cop/app/models"
 	"strconv"
 
@@ -19,8 +20,9 @@ func (c *ApiIssues) Create() revel.Result {
 		return c.App.RenderJson(&ErrorResponse{ERR_VALIDATE, ErrorMessage(ERR_VALIDATE)})
 	}
 
-	issue := &models.Issue{}
-	err := issue.Create(issue_data)
+	//issue := &models.Issue{}
+	//err := issue.Create(issue_data)
+	err := c.Issue.Create(issue_data)
 	if err != nil {
 		return c.App.RenderJson(&ErrorResponse{ERR_VALIDATE, ErrorMessage(ERR_FATAL)})
 	}
@@ -49,4 +51,14 @@ func (c *ApiIssues) List(q string) revel.Result {
 func (c *ApiIssues) Service(serviceid int, status string) revel.Result {
 	issue_list := c.Issue.GetServiceIssueList(serviceid, status)
 	return c.App.RenderJson(&Response{OK, issue_list})
+}
+
+func (c *ApiIssues) Relation(issueid int) revel.Result {
+	fmt.Println("id=", issueid)
+	service_list := c.Issue.GetCreateTarget(issueid)
+	for service := range service_list {
+		fmt.Println(service)
+	}
+
+	return nil
 }
