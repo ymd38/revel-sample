@@ -49,8 +49,8 @@ func (c *ApiIssues) Service(serviceid int, status string) revel.Result {
 	return c.App.RenderJson(&Response{OK, issue_list})
 }
 
-func (c *ApiIssues) Relation(issueid int) revel.Result {
+func (c *ApiIssues) Relation(id int) revel.Result {
 	service_issue := new(models.ServiceIssue)
-	service_issue.CreateByIssueID(issueid)
+	service_issue.CreateByIssueID(id)
 	return nil
 }
