@@ -13,3 +13,5 @@ type ServiceIssueData struct {
 	Updated        int64  `json:"-"`
 	UpdatedStr     string `json:"updated,omitempty" db:"-"`
 }
+
+/* TODO:Validate */

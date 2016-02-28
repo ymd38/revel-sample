@@ -2,7 +2,6 @@ package controllers
 
 import (
 	"security-cop/app/models"
-	"strconv"
 
 	"github.com/revel/revel"
 )
@@ -19,8 +18,6 @@ func (c *ApiIssues) Create() revel.Result {
 		return c.App.RenderJson(&ErrorResponse{ERR_VALIDATE, ErrorMessage(ERR_VALIDATE)})
 	}
 
-	//issue := &models.Issue{}
-	//err := issue.Create(issue_data)
 	err := c.Issue.Create(issue_data)
 	if err != nil {
 		return c.App.RenderJson(&ErrorResponse{ERR_VALIDATE, ErrorMessage(ERR_FATAL)})
@@ -36,13 +33,13 @@ func (c *ApiIssues) Update(id int) revel.Result {
 
 //respones is detail of issue by id.
 func (c *ApiIssues) Show(id int) revel.Result {
-	issue_list := c.Issue.GetIssueList("where id=" + strconv.Itoa(id))
+	issue_list := c.Issue.GetByID(id)
 	return c.App.RenderJson(&Response{OK, issue_list})
 }
 
 //respones is list of issue.
 func (c *ApiIssues) List(q string) revel.Result {
-	issue_list := c.Issue.GetIssueList("")
+	issue_list := c.Issue.GetList()
 	return c.App.RenderJson(&Response{OK, issue_list})
 }
 
@@ -53,9 +50,7 @@ func (c *ApiIssues) Service(serviceid int, status string) revel.Result {
 }
 
 func (c *ApiIssues) Relation(issueid int) revel.Result {
-	service := new(models.Service)
-	service_list := service.GetServiceList("") //TODO:有効な期間を条件に追加する
 	service_issue := new(models.ServiceIssue)
-	service_issue.Create(issueid, service_list)
+	service_issue.CreateByIssueID(issueid)
 	return nil
 }

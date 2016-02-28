@@ -29,6 +29,9 @@ func (issuedata *IssueData) Validate(v *revel.Validation) {
 		revel.MaxSize{1024},
 		revel.MinSize{1},
 	).Message("titel is validate error")
+	if v.HasErrors() {
+		return
+	}
 
 	v.Check(
 		issuedata.Source,
@@ -36,6 +39,9 @@ func (issuedata *IssueData) Validate(v *revel.Validation) {
 		revel.MaxSize{1024},
 		revel.MinSize{1},
 	).Message("source is validate error")
+	if v.HasErrors() {
+		return
+	}
 
 	v.Check(
 		issuedata.Detail,
@@ -43,20 +49,25 @@ func (issuedata *IssueData) Validate(v *revel.Validation) {
 		revel.MaxSize{5120},
 		revel.MinSize{1},
 	).Message("detail is validate error")
+	if v.HasErrors() {
+		return
+	}
 
 	v.Check(
 		issuedata.Priority,
 		revel.Required{},
 	).Message("priority is validate error")
+	if v.HasErrors() {
+		return
+	}
 
 	v.Match(strconv.Itoa(issuedata.Status), regexp.MustCompile(`\d{1}`)).Message("status is validate error")
-	v.Match(issuedata.LimitStr, regexp.MustCompile(`\d{8}`)).Message("limit is validate error")
-
 	if v.HasErrors() {
-		errmap := v.ErrorMap()
-		for e := range errmap {
-			revel.ERROR.Println(e)
-		}
+		return
+	}
+	v.Match(issuedata.LimitStr, regexp.MustCompile(`\d{8}`)).Message("limit is validate error")
+	if v.HasErrors() {
+		return
 	}
 }
 

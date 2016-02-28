@@ -3,6 +3,7 @@ package models
 import (
 	"errors"
 	"security-cop/app/util"
+	"strconv"
 	"time"
 
 	"github.com/revel/revel"
@@ -33,8 +34,17 @@ func (service *Service) Create(service_data *ServiceData) error {
 	return nil
 }
 
-//common function for get services
-func (service *Service) GetServiceList(condition string) []ServiceData {
+func (service *Service) GetList() []ServiceData {
+	return service.getList("")
+}
+
+func (service *Service) GetByID(id int) []ServiceData {
+	return service.getList("where id=" + strconv.Itoa(id))
+}
+
+//TODO:今度gormにする
+//privateで呼ばれるリスト取得
+func (service *Service) getList(condition string) []ServiceData {
 	sql := "select * from service " + condition
 	rows, _ := Dbm.Select(ServiceData{}, sql)
 	service_list := make([]ServiceData, len(rows))
@@ -43,8 +53,14 @@ func (service *Service) GetServiceList(condition string) []ServiceData {
 		servicedata := row.(*ServiceData)
 		service_list[cnt].Id = servicedata.Id
 		service_list[cnt].Name = servicedata.Name
-		service_list[cnt].StartStr = util.UnixTimeToDayString(servicedata.Start)
-		service_list[cnt].EndStr = util.UnixTimeToDayString(servicedata.End)
+		if servicedata.Start != 0 {
+			service_list[cnt].StartStr = util.UnixTimeToDayString(servicedata.Start)
+		}
+
+		if servicedata.End != 0 {
+			service_list[cnt].EndStr = util.UnixTimeToDayString(servicedata.End)
+		}
+
 		service_list[cnt].CreatedStr = util.UnixTimeToDateString(servicedata.Created)
 		service_list[cnt].UpdatedStr = util.UnixTimeToDateString(servicedata.Updated)
 		cnt++

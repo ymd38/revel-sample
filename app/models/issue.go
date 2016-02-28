@@ -2,7 +2,6 @@ package models
 
 import (
 	"errors"
-	"fmt"
 	"regexp"
 	"security-cop/app/util"
 	"strconv"
@@ -35,8 +34,16 @@ func (issue *Issue) Create(issue_data *IssueData) error {
 	return nil
 }
 
+func (issue *Issue) GetList() []IssueData {
+	return issue.getList("")
+}
+
+func (issue *Issue) GetByID(id int) []IssueData {
+	return issue.getList("where id=" + strconv.Itoa(id))
+}
+
 //common function for get issues
-func (issue *Issue) GetIssueList(condition string) []IssueData {
+func (issue *Issue) getList(condition string) []IssueData {
 	sql := "select * from issue " + condition
 	rows, _ := Dbm.Select(IssueData{}, sql)
 	issue_list := make([]IssueData, len(rows))
@@ -95,20 +102,4 @@ func (issue *Issue) GetServiceIssueList(serviceid int, status string) []ServiceI
 	}
 
 	return issue_list
-}
-
-func (issue *Issue) GetCreateTarget(issueid int) []ServiceData {
-	//sql := "select * from service where (start = 0 or start > %d) and (end = 0 or end < %d) and id != (select serviceid from service_issue where issueid=%d)"
-	sql := fmt.Sprintf("select * from service where id != (select serviceid from service_issue where issueid=%d)",
-		issueid)
-	rows, _ := Dbm.Select(ServiceData{}, sql)
-	service_list := make([]ServiceData, len(rows))
-	cnt := 0
-	for _, row := range rows {
-		servicedata := row.(*ServiceData)
-		service_list[cnt].Id = servicedata.Id
-		service_list[cnt].Name = servicedata.Name
-		cnt++
-	}
-	return service_list
 }
