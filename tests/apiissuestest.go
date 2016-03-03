@@ -1,8 +1,13 @@
 package tests
 
-import "github.com/revel/revel/testing"
+import (
+	. "security-cop/app/models"
+
+	"github.com/revel/revel/testing"
+)
 
 type ApiIssuesTest struct {
+	Issue
 	testing.TestSuite
 }
 
@@ -10,7 +15,7 @@ func (t *ApiIssuesTest) Before() {
 	println("Set up")
 }
 
-func (t *ApiIssuesTest) TestThatIndexPageWorks() {
+func (t *ApiIssuesTest) TestIssues() {
 	t.Get("/api/issues")
 	t.AssertOk()
 	t.AssertContentType("application/json; charset=utf-8")
