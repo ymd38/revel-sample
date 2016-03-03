@@ -12,33 +12,33 @@ type ApiServices struct {
 }
 
 func (c *ApiServices) Create() revel.Result {
-	service_data := &ServiceData{}
-	if err := BindJsonParams(c.App.Request.Body, service_data); err != nil {
-		return c.App.RenderJson(&ErrorResponse{ERR_VALIDATE, ErrorMessage(ERR_VALIDATE)})
+	serviceData := &ServiceData{}
+	if err := BindJsonParams(c.App.Request.Body, serviceData); err != nil {
+		return c.App.RenderJson(&ErrorResponse{ERR_VALIDATE, err.Error()})
 	}
 
-	err := c.Service.Create(service_data)
+	err := c.Service.Create(serviceData)
 	if err != nil {
-		return c.App.RenderJson(&ErrorResponse{ERR_VALIDATE, ErrorMessage(ERR_FATAL)})
+		return c.App.RenderJson(&ErrorResponse{ERR_FATAL, err.Error()})
 	}
 
-	return c.App.RenderJson(&Response{OK, service_data})
+	return c.App.RenderJson(&Response{OK, serviceData})
 }
 
 //respones is detail of service by id.
 func (c *ApiServices) Show(id int) revel.Result {
-	service_list := c.Service.GetByID(id)
-	return c.App.RenderJson(&Response{OK, service_list})
+	serviceList := c.Service.GetByID(id)
+	return c.App.RenderJson(&Response{OK, serviceList})
 }
 
 //respones is list of service.
 func (c *ApiServices) List() revel.Result {
-	service_list := c.Service.GetList()
-	return c.App.RenderJson(&Response{OK, service_list})
+	serviceList := c.Service.GetList()
+	return c.App.RenderJson(&Response{OK, serviceList})
 }
 
 func (c *ApiServices) Relation(id int) revel.Result {
-	service_issue := new(ServiceIssue)
-	service_issue.CreateByServiceID(id)
-	return nil
+	serviceIssue := new(ServiceIssue)
+	serviceIssue.CreateByServiceID(id)
+	return c.App.RenderJson(&Response{OK, nil})
 }

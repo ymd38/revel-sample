@@ -1,7 +1,7 @@
 package models
 
 import (
-	"errors"
+	"fmt"
 	. "security-cop/app/util"
 	"strconv"
 	"time"
@@ -13,20 +13,27 @@ type Service struct {
 	GorpController
 }
 
-func (service *Service) Create(service_data *ServiceData) error {
+func (service *Service) Create(serviceData *ServiceData) error {
 	var v revel.Validation
-	if err := service_data.Validate(&v); err != nil {
+	if err := serviceData.Validate(&v); err != nil {
 		return err
 	}
 
-	service_data.Start = DayStringToUnixTime(service_data.StartStr)
-	service_data.End = DayStringToUnixTime(service_data.EndStr)
-	//gorp doesn't support time type. we use unix time on DB.
-	service_data.Created = time.Now().Unix()
-	service_data.Updated = time.Now().Unix()
+	if serviceData.StartStr != "" {
+		serviceData.Start = DayStringToUnixTime(serviceData.StartStr)
+	}
 
-	if err := Txn.Insert(service_data); err != nil {
-		return errors.New("Insert Error")
+	if serviceData.EndStr != "" {
+		serviceData.End = DayStringToUnixTime(serviceData.EndStr)
+	}
+
+	//gorp doesn't support time type. we use unix time on DB.
+	serviceData.Created = time.Now().Unix()
+	serviceData.Updated = time.Now().Unix()
+
+	if err := Txn.Insert(serviceData); err != nil {
+		fmt.Println(err)
+		return err
 	}
 
 	return nil
@@ -45,23 +52,23 @@ func (service *Service) GetByID(id int) []ServiceData {
 func (service *Service) getList(condition string) []ServiceData {
 	sql := "select * from service " + condition
 	rows, _ := Dbm.Select(ServiceData{}, sql)
-	service_list := make([]ServiceData, len(rows))
+	serviceList := make([]ServiceData, len(rows))
 	cnt := 0
 	for _, row := range rows {
-		servicedata := row.(*ServiceData)
-		service_list[cnt].Id = servicedata.Id
-		service_list[cnt].Name = servicedata.Name
-		if servicedata.Start != 0 {
-			service_list[cnt].StartStr = UnixTimeToDayString(servicedata.Start)
+		serviceData := row.(*ServiceData)
+		serviceList[cnt].Id = serviceData.Id
+		serviceList[cnt].Name = serviceData.Name
+		if serviceData.Start != 0 {
+			serviceList[cnt].StartStr = UnixTimeToDayString(serviceData.Start)
 		}
 
-		if servicedata.End != 0 {
-			service_list[cnt].EndStr = UnixTimeToDayString(servicedata.End)
+		if serviceData.End != 0 {
+			serviceList[cnt].EndStr = UnixTimeToDayString(serviceData.End)
 		}
 
-		service_list[cnt].CreatedStr = UnixTimeToDateString(servicedata.Created)
-		service_list[cnt].UpdatedStr = UnixTimeToDateString(servicedata.Updated)
+		serviceList[cnt].CreatedStr = UnixTimeToDateString(serviceData.Created)
+		serviceList[cnt].UpdatedStr = UnixTimeToDateString(serviceData.Updated)
 		cnt++
 	}
-	return service_list
+	return serviceList
 }

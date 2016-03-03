@@ -19,6 +19,7 @@ func InitDB() {
 	Dbm = &gorp.DbMap{Db: db.Db, Dialect: gorp.MySQLDialect{"InnoDB", "UTF8"}}
 	Dbm.TraceOn("[gorp]", r.INFO)
 	Dbm.AddTableWithName(IssueData{}, "issue").SetKeys(true, "Id")
+	Dbm.AddTableWithName(ServiceData{}, "service").SetKeys(true, "Id")
 	Dbm.AddTableWithName(ServiceIssueData{}, "service_issue").SetKeys(true, "Id")
 	Dbm.AddTableWithName(UserData{}, "user").SetKeys(true, "Id")
 }
