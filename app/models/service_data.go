@@ -1,6 +1,7 @@
 package models
 
 import (
+	"errors"
 	"regexp"
 
 	"github.com/revel/revel"
@@ -19,29 +20,30 @@ type ServiceData struct {
 	UpdatedStr string `json:"updated,omitempty" db:"-"`
 }
 
-func (servicedata *ServiceData) Validate(v *revel.Validation) {
+func (servicedata *ServiceData) Validate(v *revel.Validation) error {
 	v.Check(
 		servicedata.Name,
 		revel.Required{},
 		revel.MaxSize{1024},
 		revel.MinSize{1},
-	).Message("name is validate error")
+	)
 	if v.HasErrors() {
-		return
+		return errors.New("name is validate error")
 	}
 
 	if servicedata.StartStr != "" {
-		v.Match(servicedata.StartStr, regexp.MustCompile(`\d{8}`)).Message("limit is validate error")
+		v.Match(servicedata.StartStr, regexp.MustCompile(`\d{8}`))
 		if v.HasErrors() {
-			return
+			return errors.New("limit is validate error")
 		}
 	}
 
 	if servicedata.EndStr != "" {
-		v.Match(servicedata.EndStr, regexp.MustCompile(`\d{8}`)).Message("limit is validate error")
+		v.Match(servicedata.EndStr, regexp.MustCompile(`\d{8}`))
 		if v.HasErrors() {
-			return
+			return errors.New("end is validate error")
 		}
 	}
 
+	return nil
 }

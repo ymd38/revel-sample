@@ -1,7 +1,7 @@
 package models
 
 import (
-	"security-cop/app/util"
+	. "security-cop/app/util"
 	"strconv"
 	"sync"
 	"time"
@@ -13,7 +13,7 @@ type ServiceIssue struct {
 
 func (si *ServiceIssue) Create(issueid int, serviceid int) error {
 	si_data := &ServiceIssueData{Id: 0, IssueId: issueid, ServiceId: serviceid}
-	si_data.Status = util.STATUS_NOCHECK
+	si_data.Status = STATUS_NOCHECK
 	si_data.Created = time.Now().Unix()
 	si_data.Updated = time.Now().Unix()
 	err := Txn.Insert(si_data)
@@ -74,9 +74,9 @@ func (si *ServiceIssue) getList(condition string) []ServiceIssueData {
 		si_list[cnt].IssueId = sidata.IssueId
 		si_list[cnt].Status = sidata.Status
 		si_list[cnt].Memo = sidata.Memo
-		si_list[cnt].ReflectdateStr = util.UnixTimeToDayString(sidata.Reflectdate)
-		si_list[cnt].CreatedStr = util.UnixTimeToDateString(sidata.Created)
-		si_list[cnt].UpdatedStr = util.UnixTimeToDateString(sidata.Updated)
+		si_list[cnt].ReflectdateStr = UnixTimeToDayString(sidata.Reflectdate)
+		si_list[cnt].CreatedStr = UnixTimeToDateString(sidata.Created)
+		si_list[cnt].UpdatedStr = UnixTimeToDateString(sidata.Updated)
 		cnt++
 	}
 	return si_list

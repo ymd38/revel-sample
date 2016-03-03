@@ -3,7 +3,7 @@ package models
 import (
 	"errors"
 	"regexp"
-	"security-cop/app/util"
+	. "security-cop/app/util"
 	"strconv"
 	"time"
 
@@ -21,7 +21,7 @@ func (issue *Issue) Create(issue_data *IssueData) error {
 		return errors.New("Validate Error")
 	}
 
-	issue_data.Limit = util.DayStringToUnixTime(issue_data.LimitStr)
+	issue_data.Limit = DayStringToUnixTime(issue_data.LimitStr)
 	//gorp doesn't support time type. we use unix time on DB.
 	issue_data.Created = time.Now().Unix()
 	issue_data.Updated = time.Now().Unix()
@@ -56,9 +56,9 @@ func (issue *Issue) getList(condition string) []IssueData {
 		issue_list[cnt].Detail = issuedata.Detail
 		issue_list[cnt].Priority = issuedata.Priority
 		issue_list[cnt].Status = issuedata.Status
-		issue_list[cnt].LimitStr = util.UnixTimeToDayString(issuedata.Limit)
-		issue_list[cnt].CreatedStr = util.UnixTimeToDateString(issuedata.Created)
-		issue_list[cnt].UpdatedStr = util.UnixTimeToDateString(issuedata.Updated)
+		issue_list[cnt].LimitStr = UnixTimeToDayString(issuedata.Limit)
+		issue_list[cnt].CreatedStr = UnixTimeToDateString(issuedata.Created)
+		issue_list[cnt].UpdatedStr = UnixTimeToDateString(issuedata.Updated)
 		cnt++
 	}
 	return issue_list
@@ -91,11 +91,11 @@ func (issue *Issue) GetServiceIssueList(serviceid int, status string) []ServiceI
 		issue_data := row.(*ServiceIssueView)
 		issue_list[cnt].IssueId = issue_data.IssueId
 		issue_list[cnt].IssueTitle = issue_data.IssueTitle
-		issue_list[cnt].IssuePriorityStr = util.GetPriority(issue_data.IssuePriority)
+		issue_list[cnt].IssuePriorityStr = GetPriority(issue_data.IssuePriority)
 		issue_list[cnt].StatusCode = issue_data.StatusCode
-		issue_list[cnt].Status = util.GetStatus(issue_data.StatusCode)
+		issue_list[cnt].Status = GetStatus(issue_data.StatusCode)
 		if issue_data.ReflectDate > 0 {
-			issue_list[cnt].ReflectDateStr = util.UnixTimeToDayString(issue_data.ReflectDate)
+			issue_list[cnt].ReflectDateStr = UnixTimeToDayString(issue_data.ReflectDate)
 		}
 
 		cnt++

@@ -1,19 +1,19 @@
 package controllers
 
 import (
-	"security-cop/app/models"
+	. "security-cop/app/models"
 
 	"github.com/revel/revel"
 )
 
 type ApiServices struct {
 	ApiController
-	models.Service
+	Service
 }
 
 func (c *ApiServices) Create() revel.Result {
-	service_data := &models.ServiceData{}
-	if err := models.BindJsonParams(c.App.Request.Body, service_data); err != nil {
+	service_data := &ServiceData{}
+	if err := BindJsonParams(c.App.Request.Body, service_data); err != nil {
 		return c.App.RenderJson(&ErrorResponse{ERR_VALIDATE, ErrorMessage(ERR_VALIDATE)})
 	}
 
@@ -38,7 +38,7 @@ func (c *ApiServices) List() revel.Result {
 }
 
 func (c *ApiServices) Relation(id int) revel.Result {
-	service_issue := new(models.ServiceIssue)
+	service_issue := new(ServiceIssue)
 	service_issue.CreateByServiceID(id)
 	return nil
 }
