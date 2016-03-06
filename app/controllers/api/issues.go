@@ -15,12 +15,12 @@ type ApiIssues struct {
 func (c *ApiIssues) Create() revel.Result {
 	issue_data := &IssueData{}
 	if err := BindJsonParams(c.App.Request.Body, issue_data); err != nil {
-		return c.App.RenderJson(&ErrorResponse{ERR_VALIDATE, ErrorMessage(ERR_VALIDATE)})
+		return c.App.RenderJson(&ErrorResponse{ERR_VALIDATE, err.Error()})
 	}
 
 	err := c.Issue.Create(issue_data)
 	if err != nil {
-		return c.App.RenderJson(&ErrorResponse{ERR_VALIDATE, ErrorMessage(ERR_FATAL)})
+		return c.App.RenderJson(&ErrorResponse{ERR_FATAL, err.Error()})
 	}
 
 	return c.App.RenderJson(&Response{OK, issue_data})

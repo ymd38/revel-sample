@@ -1,6 +1,7 @@
 package models
 
 import (
+	"errors"
 	"regexp"
 	"strconv"
 
@@ -22,15 +23,15 @@ type IssueData struct {
 	UpdatedStr string `json:"updated,omitempty" db:"-"`
 }
 
-func (issuedata *IssueData) Validate(v *revel.Validation) {
+func (issuedata *IssueData) Validate(v *revel.Validation) error {
 	v.Check(
 		issuedata.Title,
 		revel.Required{},
 		revel.MaxSize{1024},
 		revel.MinSize{1},
-	).Message("titel is validate error")
+	)
 	if v.HasErrors() {
-		return
+		return errors.New("titel is validate error")
 	}
 
 	v.Check(
@@ -38,9 +39,9 @@ func (issuedata *IssueData) Validate(v *revel.Validation) {
 		revel.Required{},
 		revel.MaxSize{1024},
 		revel.MinSize{1},
-	).Message("source is validate error")
+	)
 	if v.HasErrors() {
-		return
+		return errors.New("source is validate error")
 	}
 
 	v.Check(
@@ -48,27 +49,26 @@ func (issuedata *IssueData) Validate(v *revel.Validation) {
 		revel.Required{},
 		revel.MaxSize{5120},
 		revel.MinSize{1},
-	).Message("detail is validate error")
+	)
 	if v.HasErrors() {
-		return
+		return errors.New("detail is validate error")
 	}
 
-	v.Check(
-		issuedata.Priority,
-		revel.Required{},
-	).Message("priority is validate error")
+	v.Match(strconv.Itoa(issuedata.Priority), regexp.MustCompile(`\d{1}`))
 	if v.HasErrors() {
-		return
+		return errors.New("priority is validate error")
 	}
 
-	v.Match(strconv.Itoa(issuedata.Status), regexp.MustCompile(`\d{1}`)).Message("status is validate error")
+	v.Match(strconv.Itoa(issuedata.Status), regexp.MustCompile(`\d{1}`))
 	if v.HasErrors() {
-		return
+		return errors.New("status is validate error")
 	}
-	v.Match(issuedata.LimitStr, regexp.MustCompile(`\d{8}`)).Message("limit is validate error")
+	v.Match(issuedata.LimitStr, regexp.MustCompile(`\d{8}`))
 	if v.HasErrors() {
-		return
+		return errors.New("limit is validate error")
 	}
+
+	return nil
 }
 
 /* サービス毎の対応状況 */

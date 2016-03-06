@@ -24,20 +24,3 @@ const (
 	ERR_VALIDATE
 	ERR_FATAL
 )
-
-func (c *ErrorResponse) String() string {
-	return ErrorMessage(c.Code)
-}
-
-func ErrorMessage(code int) string {
-	switch code {
-	case WARN_NOT_FOUND:
-		return "not found"
-	case ERR_VALIDATE:
-		return "validate error"
-	case ERR_FATAL:
-		return "system error"
-	default:
-		return "system error"
-	}
-}

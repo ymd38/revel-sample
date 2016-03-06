@@ -1,7 +1,6 @@
 package models
 
 import (
-	"errors"
 	"regexp"
 	. "security-cop/app/util"
 	"strconv"
@@ -16,9 +15,8 @@ type Issue struct {
 
 func (issue *Issue) Create(issue_data *IssueData) error {
 	var v revel.Validation
-	issue_data.Validate(&v)
-	if v.HasErrors() {
-		return errors.New("Validate Error")
+	if err := issue_data.Validate(&v); err != nil {
+		return err
 	}
 
 	issue_data.Limit = DayStringToUnixTime(issue_data.LimitStr)
@@ -28,7 +26,7 @@ func (issue *Issue) Create(issue_data *IssueData) error {
 
 	err := Txn.Insert(issue_data)
 	if err != nil {
-		return errors.New("System Error")
+		return err
 	}
 
 	return nil

@@ -1,7 +1,6 @@
 package models
 
 import (
-	"fmt"
 	. "security-cop/app/util"
 	"strconv"
 	"time"
@@ -32,7 +31,6 @@ func (service *Service) Create(serviceData *ServiceData) error {
 	serviceData.Updated = time.Now().Unix()
 
 	if err := Txn.Insert(serviceData); err != nil {
-		fmt.Println(err)
 		return err
 	}
 
