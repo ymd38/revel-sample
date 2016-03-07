@@ -3,6 +3,8 @@ package controllers
 
 import "security-cop/app/controllers"
 
+const CALLBACK = "callBack"
+
 type ApiController struct {
 	controllers.App
 }
