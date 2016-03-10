@@ -5,8 +5,6 @@ import (
 	. "security-cop/app/util"
 	"strconv"
 	"time"
-
-	"github.com/revel/revel"
 )
 
 type Issue struct {
@@ -14,8 +12,7 @@ type Issue struct {
 }
 
 func (issue *Issue) Create(issue_data *IssueData) error {
-	var v revel.Validation
-	if err := issue_data.Validate(&v); err != nil {
+	if err := issue_data.Validate(); err != nil {
 		return err
 	}
 

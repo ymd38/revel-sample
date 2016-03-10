@@ -23,7 +23,8 @@ type IssueData struct {
 	UpdatedStr string `json:"updated,omitempty" db:"-"`
 }
 
-func (issuedata *IssueData) Validate(v *revel.Validation) error {
+func (issuedata *IssueData) Validate() error {
+	var v revel.Validation
 	v.Check(
 		issuedata.Title,
 		revel.Required{},

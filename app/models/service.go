@@ -4,8 +4,6 @@ import (
 	. "security-cop/app/util"
 	"strconv"
 	"time"
-
-	"github.com/revel/revel"
 )
 
 type Service struct {
@@ -13,8 +11,7 @@ type Service struct {
 }
 
 func (service *Service) Create(serviceData *ServiceData) error {
-	var v revel.Validation
-	if err := serviceData.Validate(&v); err != nil {
+	if err := serviceData.Validate(); err != nil {
 		return err
 	}
 
