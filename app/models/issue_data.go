@@ -9,7 +9,7 @@ import (
 )
 
 type IssueData struct {
-	Id         int    `json:"id"`
+	ID         int    `json:"id"`
 	Title      string `json:"title"`
 	Source     string `json:"source"`
 	Detail     string `json:"detail"`
@@ -75,7 +75,7 @@ func (issuedata *IssueData) Validate() error {
 /* サービス毎の対応状況 */
 type ServiceIssueView struct {
 	ServiceID        int    `json:"-"`
-	IssueId          int    `json:"issue_id"`
+	IssueID          int    `json:"issue_id"`
 	IssueTitle       string `json:"issue_title"`
 	IssuePriority    int    `json:"-"`
 	IssuePriorityStr string `json:"issue_priority" db:"-"`

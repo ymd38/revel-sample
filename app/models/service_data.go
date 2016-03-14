@@ -8,7 +8,7 @@ import (
 )
 
 type ServiceData struct {
-	Id         int    `json:"id"`
+	ID         int    `json:"id"`
 	Name       string `json:"name"`
 	Start      int64  `json:"-"`
 	StartStr   string `json:"start,,omitempty" db:"-"`

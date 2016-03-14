@@ -45,7 +45,7 @@ func (issue *Issue) getList(condition string) []IssueData {
 	cnt := 0
 	for _, row := range rows {
 		issuedata := row.(*IssueData)
-		issue_list[cnt].Id = issuedata.Id
+		issue_list[cnt].ID = issuedata.ID
 		issue_list[cnt].Title = issuedata.Title
 		issue_list[cnt].Source = issuedata.Source
 		issue_list[cnt].Detail = issuedata.Detail
@@ -84,7 +84,7 @@ func (issue *Issue) GetServiceIssueList(serviceid int, status string) []ServiceI
 	cnt := 0
 	for _, row := range rows {
 		issue_data := row.(*ServiceIssueView)
-		issue_list[cnt].IssueId = issue_data.IssueId
+		issue_list[cnt].IssueID = issue_data.IssueID
 		issue_list[cnt].IssueTitle = issue_data.IssueTitle
 		issue_list[cnt].IssuePriorityStr = GetPriority(issue_data.IssuePriority)
 		issue_list[cnt].StatusCode = issue_data.StatusCode

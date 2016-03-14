@@ -1,9 +1,9 @@
 package models
 
 type ServiceIssueData struct {
-	Id             int    `json:"id"`
-	ServiceId      int    `json:"-"`
-	IssueId        int    `json:"-"`
+	ID             int    `json:"id"`
+	ServiceID      int    `json:"-"`
+	IssueID        int    `json:"-"`
 	Status         int    `json:"status"`
 	Memo           string `json:"memo"`
 	Reflectdate    int64  `json:"-"`

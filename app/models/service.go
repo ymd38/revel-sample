@@ -51,7 +51,7 @@ func (service *Service) getList(condition string) []ServiceData {
 	cnt := 0
 	for _, row := range rows {
 		serviceData := row.(*ServiceData)
-		serviceList[cnt].Id = serviceData.Id
+		serviceList[cnt].ID = serviceData.ID
 		serviceList[cnt].Name = serviceData.Name
 		if serviceData.Start != 0 {
 			serviceList[cnt].StartStr = UnixTimeToDayString(serviceData.Start)
