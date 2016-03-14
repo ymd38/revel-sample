@@ -16,6 +16,11 @@ func (si *ServiceIssue) Create(issueid int, serviceid int) error {
 	si_data.Status = STATUS_NOCHECK
 	si_data.Created = time.Now().Unix()
 	si_data.Updated = time.Now().Unix()
+
+	if err := si_data.Validate(); err != nil {
+		return err
+	}
+
 	err := Txn.Insert(si_data)
 	if err != nil {
 		panic(err)
