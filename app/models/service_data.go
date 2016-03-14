@@ -8,7 +8,7 @@ import (
 )
 
 type ServiceData struct {
-	Id         int    `json:"id"`
+	ID         int    `json:"id"`
 	Name       string `json:"name"`
 	Start      int64  `json:"-"`
 	StartStr   string `json:"start,,omitempty" db:"-"`
@@ -20,7 +20,8 @@ type ServiceData struct {
 	UpdatedStr string `json:"updated,omitempty" db:"-"`
 }
 
-func (servicedata *ServiceData) Validate(v *revel.Validation) error {
+func (servicedata *ServiceData) Validate() error {
+	var v revel.Validation
 	v.Check(
 		servicedata.Name,
 		revel.Required{},

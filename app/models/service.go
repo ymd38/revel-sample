@@ -4,8 +4,6 @@ import (
 	. "security-cop/app/util"
 	"strconv"
 	"time"
-
-	"github.com/revel/revel"
 )
 
 type Service struct {
@@ -13,8 +11,7 @@ type Service struct {
 }
 
 func (service *Service) Create(serviceData *ServiceData) error {
-	var v revel.Validation
-	if err := serviceData.Validate(&v); err != nil {
+	if err := serviceData.Validate(); err != nil {
 		return err
 	}
 
@@ -54,7 +51,7 @@ func (service *Service) getList(condition string) []ServiceData {
 	cnt := 0
 	for _, row := range rows {
 		serviceData := row.(*ServiceData)
-		serviceList[cnt].Id = serviceData.Id
+		serviceList[cnt].ID = serviceData.ID
 		serviceList[cnt].Name = serviceData.Name
 		if serviceData.Start != 0 {
 			serviceList[cnt].StartStr = UnixTimeToDayString(serviceData.Start)
