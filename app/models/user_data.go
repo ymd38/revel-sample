@@ -21,6 +21,7 @@ type UserData struct {
 // Validate for userData of struct
 func (user *UserData) Validate() error {
 	var v revel.Validation
+
 	v.Match(user.Name, regexp.MustCompile(`\w{1,30}`))
 	if v.HasErrors() {
 		return errors.New("name is validate error")
