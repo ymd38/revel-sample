@@ -18,12 +18,11 @@ func (t *ModelUserTest) Before() {
 }
 
 func (t *ModelUserTest) TestCreate() {
-	okUserData := UserData{Name: "h-yamada", MailAddr: "h-yamada@mediba.jp", Password: "h-yamada"}
+	okUserData := UserData{MailAddr: "h-yamada@mediba.jp", Password: "h-yamada"}
 	ngUserDataList := []UserData{
-		{Name: "", MailAddr: "", Password: ""},
-		{Name: "", MailAddr: "h-yamada@mediba.jp", Password: "h-yamada"},
-		{Name: "h-yamada", MailAddr: "h-yamadamediba.jp", Password: "h-yamada"},
-		{Name: "h-yamada", MailAddr: "h-yamada@mediba.jp", Password: ""},
+		{MailAddr: "", Password: ""},
+		{MailAddr: "h-yamadamediba.jp", Password: "h-yamada"},
+		{MailAddr: "h-yamada@mediba.jp", Password: ""},
 	}
 
 	if err := t.user.Create(&okUserData); err != nil { //正常系
@@ -32,7 +31,7 @@ func (t *ModelUserTest) TestCreate() {
 
 	//NGパターン
 	for i := 0; i < len(ngUserDataList); i++ {
-		if err := t.user.Create(&ngUserDataList[i]); err == nil { //タイトルは必須なのでエラーになる
+		if err := t.user.Create(&ngUserDataList[i]); err == nil {
 			t.Assert(false)
 		}
 	}

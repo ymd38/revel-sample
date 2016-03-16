@@ -20,11 +20,11 @@ func (user *User) Create(userData *UserData) error {
 	//gorp doesn't support time type. we use unix time on DB.
 	userData.Created = time.Now().Unix()
 	userData.Updated = time.Now().Unix()
-	/*
-		if err := Txn.Insert(userData); err != nil {
-			return err
-		}
-	*/
+
+	if err := Txn.Insert(userData); err != nil {
+		fmt.Println(err)
+		return err
+	}
 
 	userData.Password = ""
 
