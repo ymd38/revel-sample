@@ -18,8 +18,10 @@ CREATE TABLE IF NOT EXISTS `issue` (
 
 CREATE TABLE IF NOT EXISTS `user` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT 'ID',
-  `name` varchar(1024) NOT NULL COMMENT 'ユーザ名',
+  `mailaddr` varchar(1024) NOT NULL COMMENT 'メールアドレス',
   `password` varchar(1024) NOT NULL COMMENT 'パスワード',
+  `created` int NOT NULL COMMENT '作成日時(UNIX_TIMESTAMP)',
+  `updated` int NOT NULL COMMENT '更新日時(UNIX_TIMESTAMP)',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='ユーザー';
 

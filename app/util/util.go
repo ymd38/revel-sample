@@ -1,6 +1,11 @@
 package util
 
-import "time"
+import (
+	"crypto/md5"
+	"encoding/hex"
+	"io"
+	"time"
+)
 
 const (
 	DATETIME_FORMAT = "2006-01-02 15:04:05"
@@ -19,4 +24,10 @@ func UnixTimeToDayString(unixtime int64) string {
 func DayStringToUnixTime(day string) int64 {
 	unixtime, _ := time.Parse(DAY_FORMAT2, day)
 	return unixtime.Unix()
+}
+
+func ToMD5(src string) string {
+	h := md5.New()
+	io.WriteString(h, src)
+	return hex.EncodeToString(h.Sum(nil))
 }

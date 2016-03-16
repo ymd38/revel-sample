@@ -18,34 +18,25 @@ func (t *ModelIssueTest) Before() {
 }
 
 func (t *ModelIssueTest) TestCreate() {
-	issueData := &IssueData{}
-	if err := t.issue.Create(issueData); err == nil { //Titleは必須なのでエラーになる
+	okIssueData := IssueData{Title: "TitleTest", Source: "SourceTest", Detail: "DetailTest", Priority: 0, Status: 1, LimitStr: "20160501"}
+	ngIssueData := []IssueData{
+		{Title: "", Source: "", Detail: "", Priority: 0, Status: 1, LimitStr: ""},
+		{Title: "TitleTest", Source: "", Detail: "DetailTest", Priority: 0, Status: 1, LimitStr: "20160501"},
+		{Title: "TitleTest", Source: "SourceTest", Detail: "", Priority: 0, Status: 1, LimitStr: "20160501"},
+		{Title: "TitleTest", Source: "SourceTest", Detail: "DetailTest", Priority: 0, Status: 1, LimitStr: "MOJI"},
+	}
+
+	//正常パターン
+	if err := t.issue.Create(&okIssueData); err != nil {
 		t.Assert(false)
 	}
 
-	issueData.Title = "TitleTest"
-	if err := t.issue.Create(issueData); err == nil { //Sourceは必須なのでエラーになる
-		t.Assert(false)
+	//エラーパターン
+	for i := 0; i < len(ngIssueData); i++ {
+		if err := t.issue.Create(&ngIssueData[i]); err == nil {
+			t.Assert(false)
+		}
 	}
-
-	issueData.Source = "SourceTest"
-	if err := t.issue.Create(issueData); err == nil { //Detailは必須なのでエラーになる
-		t.Assert(false)
-	}
-
-	issueData.Detail = "DetailTest"
-	issueData.Priority = 0
-	issueData.Status = 1
-
-	issueData.LimitStr = "test"
-	if err := t.issue.Create(issueData); err == nil { //日付フォーマットエラーになる
-		t.Assert(false)
-	}
-	issueData.LimitStr = "20160501"
-	if err := t.issue.Create(issueData); err != nil { //正常系
-		t.Assert(false)
-	}
-
 }
 
 func (t *ModelIssueTest) TestGetList() {

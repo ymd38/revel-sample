@@ -18,27 +18,24 @@ func (t *ModelServiceTest) Before() {
 }
 
 func (t *ModelServiceTest) TestCreate() {
-	serviceData := &ServiceData{}
-	if err := t.service.Create(serviceData); err == nil { //タイトルは必須なのでエラーになる
+	okServiceData := ServiceData{Name: "test", StartStr: "20160101", EndStr: "20251231"}
+	ngServiceData := []ServiceData{
+		{Name: "", StartStr: "20160101", EndStr: "20251231"},
+		{Name: "test", StartStr: "test", EndStr: "20251231"},
+		{Name: "test", StartStr: "20160101", EndStr: "test"},
+	}
+
+	//OKパターン
+	if err := t.service.Create(&okServiceData); err != nil {
 		t.Assert(false)
 	}
 
-	serviceData.Name = "test"
-	serviceData.StartStr = "test"
-	if err := t.service.Create(serviceData); err == nil { //日付フォーマットエラーになる
-		t.Assert(false)
+	//NGパターン
+	for i := 0; i < len(ngServiceData); i++ {
+		if err := t.service.Create(&ngServiceData[i]); err == nil {
+			t.Assert(false)
+		}
 	}
-	serviceData.StartStr = "20160101"
-	serviceData.EndStr = "test"
-	if err := t.service.Create(serviceData); err == nil { //日付フォーマットエラーになる
-		t.Assert(false)
-	}
-
-	serviceData.EndStr = "20251231"
-	if err := t.service.Create(serviceData); err != nil { //正常系
-		t.Assert(false)
-	}
-
 }
 
 func (t *ModelServiceTest) TestGetList() {
