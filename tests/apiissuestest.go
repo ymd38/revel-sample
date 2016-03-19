@@ -18,7 +18,7 @@ func (t *ApiIssuesTest) Before() {
 func (t *ApiIssuesTest) TestIssues() {
 	t.Get("/api/issues")
 	t.AssertOk()
-	t.AssertContentType("application/javascript; charset=utf-8")
+	t.AssertContentType("application/json; charset=utf-8")
 }
 
 func (t *ApiIssuesTest) After() {
