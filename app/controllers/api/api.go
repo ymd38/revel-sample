@@ -1,12 +1,16 @@
 /* API共通機能 */
 package controllers
 
-import "security-cop/app/controllers"
+import (
+	"fmt"
+	"reflect"
 
-const CALLBACK = "callBack"
+	"github.com/revel/revel"
+)
 
 type ApiController struct {
-	controllers.App
+	*revel.Controller
+	callBack string
 }
 
 type Response struct {
@@ -26,3 +30,13 @@ const (
 	ERR_VALIDATE
 	ERR_FATAL
 )
+
+func (c *ApiController) Response(s interface{}) revel.Result {
+	fmt.Println(reflect.TypeOf(s))
+
+	if c.callBack != "" {
+		return c.RenderJsonP(c.callBack, s)
+	} else {
+		return c.RenderJson(s)
+	}
+}

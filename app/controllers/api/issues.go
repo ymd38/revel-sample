@@ -13,17 +13,17 @@ type ApiIssues struct {
 
 //insert issue data
 func (c *ApiIssues) Create() revel.Result {
-	issue_data := &IssueData{}
-	if err := BindJsonParams(c.App.Request.Body, issue_data); err != nil {
-		return c.App.RenderJsonP(CALLBACK, &ErrorResponse{ERR_VALIDATE, err.Error()})
+	issue_data := IssueData{}
+	if err := BindJsonParams(c.Request.Body, issue_data); err != nil {
+		return c.Response(&ErrorResponse{ERR_VALIDATE, err.Error()})
 	}
 
-	err := c.Issue.Create(issue_data)
+	err := c.Issue.Create(&issue_data)
 	if err != nil {
-		return c.App.RenderJsonP(CALLBACK, &ErrorResponse{ERR_FATAL, err.Error()})
+		return c.Response(&ErrorResponse{ERR_FATAL, err.Error()})
 	}
 
-	return c.App.RenderJsonP(CALLBACK, &Response{OK, issue_data})
+	return c.Response(&Response{OK, issue_data})
 }
 
 //update issue data
@@ -34,19 +34,19 @@ func (c *ApiIssues) Update(id int) revel.Result {
 //respones is detail of issue by id.
 func (c *ApiIssues) Show(id int) revel.Result {
 	issue_list := c.Issue.GetByID(id)
-	return c.App.RenderJsonP(CALLBACK, &Response{OK, issue_list})
+	return c.Response(&Response{OK, issue_list})
 }
 
 //respones is list of issue.
 func (c *ApiIssues) List(q string) revel.Result {
 	issue_list := c.Issue.GetList()
-	return c.App.RenderJsonP(CALLBACK, &Response{OK, issue_list})
+	return c.Response(&Response{OK, issue_list})
 }
 
 //list issues of service
 func (c *ApiIssues) Service(serviceid int, status string) revel.Result {
 	issue_list := c.Issue.GetServiceIssueList(serviceid, status)
-	return c.App.RenderJsonP(CALLBACK, &Response{OK, issue_list})
+	return c.Response(&Response{OK, issue_list})
 }
 
 func (c *ApiIssues) Relation(id int) revel.Result {
