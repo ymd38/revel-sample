@@ -6,7 +6,7 @@ module:testrunner
 
 GET     /                                       App.Index
 
-#GET  /issues Issues.List
+GET  /issues/regist Issues.Regist
 #POST /issues Issues.Create
 #POST /issues/:id Issues.Update
 

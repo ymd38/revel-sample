@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"fmt"
 	. "security-cop/app/models"
 
 	"github.com/revel/revel"
@@ -14,7 +15,8 @@ type ApiIssues struct {
 //insert issue data
 func (c *ApiIssues) Create() revel.Result {
 	issue_data := IssueData{}
-	if err := BindJsonParams(c.Request.Body, issue_data); err != nil {
+	fmt.Println(c.Request.Body)
+	if err := BindJsonParams(c.Request.Body, &issue_data); err != nil {
 		return c.Response(&ErrorResponse{ERR_VALIDATE, err.Error()})
 	}
 

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>脆弱性登録</title>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+    <script type="text/javascript">
+    $(function() {
+      $('#submit-issue').click(function() {
+          var postData = {
+            title: $("#title").val(),
+            source: $("#source").val(),
+            detail: $("#detail").val(),
+            priority: Number($("#priority").val()),
+            limit: "20160430",
+          };
+          $.ajax({
+            type: 'POST',
+            url: "/api/issues/",
+            contentType: 'application/JSON',
+            data: JSON.stringify(postData),
+            dataType: 'JSON',
+            scriptCharset: 'utf-8',
+            error : function(data) {
+              $("#err-message").html("System Error")
+            },
+            success: function(jsonResponse){
+              if (jsonResponse.code == 0) {
+                window.location.href = "/api/issues";
+              } else {
+                $("#err-message").html(jsonResponse.message);
+              }
+            }
+          });
+
+          return false;
+      });
+    })
+    </script>
+  </head>
+  <body>
+    <div class="page-header">
+      <h1>脆弱性情報</h1>
+  </div>
+  <form id="form-issue">
+    <span id="err-message" class="text-danger"></span>
+    <div class="form-group">
+      <label for="title">タイトル:</label>
+      <input type="text" id="title" class="form-control">
+    </div>
+    <div class="form-group">
+      <label for="source">提供元:</label>
+      <input type="text" id="source" class="form-control">
+    </div>
+    <div class="form-group">
+      <label for="detail">詳細:</label>
+      <textarea id="detail" class="form-control"></textarea>
+    </div>
+    <div class="form-group">
+      <label for="priority">緊急度:</label>
+      <select id="priority" class="form-control">
+        <option value="0">重要</option>
+        <option value="1">緊急</option>
+        <option value="2">その他</option>
+      </select>
+    </div>
+    <input id="submit-issue" type="button" value="登録">
+  </form>
+  </body>
+</html>
