@@ -38,16 +38,27 @@ func (t *ModelServiceTest) TestCreate() {
 	}
 }
 
+func (t *ModelServiceTest) TestUpdate() {
+	serviceList := t.service.GetList()
+	for i := 0; i < len(serviceList); i++ {
+		serviceList[i].Name = "this is testcode"
+		if err := t.service.Update(&serviceList[i]); err != nil {
+			t.Assert(false)
+		}
+		break
+	}
+}
+
 func (t *ModelServiceTest) TestGetList() {
-	issueList := t.service.GetList()
-	if len(issueList) == 0 {
+	serviceList := t.service.GetList()
+	if len(serviceList) == 0 {
 		t.AssertNotFound()
 	}
 }
 
 func (t *ModelServiceTest) TestGetByID() {
-	issueList := t.service.GetByID(1)
-	if len(issueList) == 0 {
+	serviceList := t.service.GetByID(1)
+	if len(serviceList) == 0 {
 		t.AssertNotFound()
 	}
 }

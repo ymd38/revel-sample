@@ -30,6 +30,10 @@ func (issue *Issue) Create(issue_data *IssueData) error {
 }
 
 func (issue *Issue) Update(issue_data *IssueData) error {
+	if err := issue_data.Validate(); err != nil {
+		return err
+	}
+
 	issue_data.Updated = time.Now().Unix()
 	_, err := Txn.Update(issue_data)
 	if err != nil {

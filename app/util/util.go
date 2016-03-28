@@ -18,7 +18,7 @@ func UnixTimeToDateString(unixtime int64) string {
 }
 
 func UnixTimeToDayString(unixtime int64) string {
-	return time.Unix(unixtime, 0).Format(DAY_FORMAT)
+	return time.Unix(unixtime, 0).Format(DAY_FORMAT2)
 }
 
 func DayStringToUnixTime(day string) int64 {

@@ -34,6 +34,28 @@ func (service *Service) Create(serviceData *ServiceData) error {
 	return nil
 }
 
+func (service *Service) Update(serviceData *ServiceData) error {
+	if err := serviceData.Validate(); err != nil {
+		return err
+	}
+
+	if serviceData.StartStr != "" {
+		serviceData.Start = DayStringToUnixTime(serviceData.StartStr)
+	}
+
+	if serviceData.EndStr != "" {
+		serviceData.End = DayStringToUnixTime(serviceData.EndStr)
+	}
+
+	serviceData.Updated = time.Now().Unix()
+
+	if _, err := Txn.Update(serviceData); err != nil {
+		return err
+	}
+
+	return nil
+}
+
 func (service *Service) GetList() []ServiceData {
 	return service.getList("")
 }

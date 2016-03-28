@@ -28,6 +28,18 @@ func (si *ServiceIssue) Create(issueid int, serviceid int) error {
 	return nil
 }
 
+func (si *ServiceIssue) Update(siData *ServiceIssueData) error {
+	if err := siData.Validate(); err != nil {
+		return err
+	}
+
+	_, err := Txn.Update(siData)
+	if err != nil {
+		panic(err)
+	}
+	return nil
+}
+
 func (si *ServiceIssue) CreateByIssueID(issueid int) error {
 	var wg sync.WaitGroup
 	service := new(Service)

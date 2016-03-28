@@ -35,7 +35,7 @@ func (servicedata *ServiceData) Validate() error {
 	if servicedata.StartStr != "" {
 		v.Match(servicedata.StartStr, regexp.MustCompile(`\d{8}`))
 		if v.HasErrors() {
-			return errors.New("limit is validate error")
+			return errors.New("start is validate error")
 		}
 	}
 
