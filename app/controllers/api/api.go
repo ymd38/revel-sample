@@ -1,12 +1,7 @@
 /* API共通機能 */
 package controllers
 
-import (
-	"fmt"
-	"reflect"
-
-	"github.com/revel/revel"
-)
+import "github.com/revel/revel"
 
 type ApiController struct {
 	*revel.Controller
@@ -32,7 +27,6 @@ const (
 )
 
 func (c *ApiController) Response(s interface{}) revel.Result {
-	fmt.Println(reflect.TypeOf(s))
 
 	if c.callBack != "" {
 		return c.RenderJsonP(c.callBack, s)

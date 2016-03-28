@@ -16,19 +16,28 @@ func (user *User) Create(userData *UserData) error {
 	}
 
 	userData.Password = ToMD5(userData.Password)
-	fmt.Println(userData.Password)
 	//gorp doesn't support time type. we use unix time on DB.
 	userData.Created = time.Now().Unix()
 	userData.Updated = time.Now().Unix()
 
 	if err := Txn.Insert(userData); err != nil {
-		fmt.Println(err)
 		return err
 	}
 
 	userData.Password = ""
 
 	return nil
+}
+
+func (user *User) Auth(userData *UserData) string {
+	var row UserData
+	userData.Password = ToMD5(userData.Password)
+	if err := Dbm.SelectOne(&row, "select * from user where mailaddr=? and password=?", userData.MailAddr, userData.Password); err != nil {
+		fmt.Println(err)
+		return ""
+	}
+	return ToMD5(row.MailAddr + row.Password)
+
 }
 
 /*

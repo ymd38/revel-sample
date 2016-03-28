@@ -55,18 +55,8 @@ CREATE TABLE IF NOT EXISTS `service_issue` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='サービス対応状況';
 
-
-
 --index
 
---テストデータ
-insert into issue values(1,'apache脆弱性', '社内', 'バージョンアップが必要', 1, 1, UNIX_TIMESTAMP(), UNIX_TIMESTAMP(), UNIX_TIMESTAMP());
-insert into issue values(2,'PHP脆弱性', '社内', 'バージョンアップが必要', 1, 1, UNIX_TIMESTAMP(), UNIX_TIMESTAMP(), UNIX_TIMESTAMP());
-insert into user values(1, 'ymd38', 'aa');
-insert into service values(1, 'サイトA', UNIX_TIMESTAMP(), UNIX_TIMESTAMP(), UNIX_TIMESTAMP(), UNIX_TIMESTAMP());
-insert into service_member values(NULL, 1, 1,  UNIX_TIMESTAMP());
-insert into service_issue values(NULL, 1,1,1,0,NULL,UNIX_TIMESTAMP(),UNIX_TIMESTAMP());
-insert into service_issue values(NULL, 1,2,1,0,NULL,UNIX_TIMESTAMP(),UNIX_TIMESTAMP());
 
 DROP TABLE issue;
 DROP TABLE user;

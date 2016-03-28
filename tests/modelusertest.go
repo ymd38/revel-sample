@@ -18,11 +18,11 @@ func (t *ModelUserTest) Before() {
 }
 
 func (t *ModelUserTest) TestCreate() {
-	okUserData := UserData{MailAddr: "h-yamada@mediba.jp", Password: "h-yamada"}
+	okUserData := UserData{MailAddr: "test@mediba.jp", Password: "test"}
 	ngUserDataList := []UserData{
 		{MailAddr: "", Password: ""},
-		{MailAddr: "h-yamadamediba.jp", Password: "h-yamada"},
-		{MailAddr: "h-yamada@mediba.jp", Password: ""},
+		{MailAddr: "testmediba.jp", Password: "test"},
+		{MailAddr: "test@mediba.jp", Password: ""},
 	}
 
 	if err := t.user.Create(&okUserData); err != nil { //正常系
@@ -35,6 +35,15 @@ func (t *ModelUserTest) TestCreate() {
 			t.Assert(false)
 		}
 	}
+}
+
+func (t *ModelUserTest) TestGetToken() {
+	//Token取得
+	/*	okUserData := UserData{MailAddr: "test@mediba.jp", Password: "test"}
+		if token := t.user.GetToken(&okUserData); token == "" {
+			t.Assert(false)
+		}
+	*/
 }
 
 func (t *ModelUserTest) After() {
