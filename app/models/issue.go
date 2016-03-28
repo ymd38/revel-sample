@@ -29,6 +29,16 @@ func (issue *Issue) Create(issue_data *IssueData) error {
 	return nil
 }
 
+func (issue *Issue) Update(issue_data *IssueData) error {
+	issue_data.Updated = time.Now().Unix()
+	_, err := Txn.Update(issue_data)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
 func (issue *Issue) GetList() []IssueData {
 	return issue.getList("")
 }
