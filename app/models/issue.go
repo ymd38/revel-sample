@@ -43,8 +43,36 @@ func (issue *Issue) Update(issue_data *IssueData) error {
 	return nil
 }
 
-func (issue *Issue) GetList() []IssueData {
+func (issue *Issue) GetListAll() []IssueData {
 	return issue.getList("")
+}
+
+func (issue *Issue) GetList(status, priority string) []IssueData {
+	conditionList := []string{}
+	if status != "" {
+		if _, err := strconv.Atoi(status); err == nil {
+			conditionList = append(conditionList, "status="+status)
+		}
+	}
+	if priority != "" {
+		if _, err := strconv.Atoi(priority); err == nil {
+			conditionList = append(conditionList, "priority="+priority)
+		}
+	}
+
+	if len(conditionList) > 0 {
+		condition := "where "
+		for i := 0; i < len(conditionList); i++ {
+			if i == 0 {
+				condition += conditionList[i]
+			} else {
+				condition += " and " + conditionList[i]
+			}
+		}
+		return issue.getList(condition)
+	} else {
+		return issue.getList("")
+	}
 }
 
 func (issue *Issue) GetByID(id int) []IssueData {

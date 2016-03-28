@@ -40,7 +40,7 @@ func (t *ModelIssueTest) TestCreate() {
 }
 
 func (t *ModelIssueTest) TestUpdate() {
-	issueList := t.issue.GetList()
+	issueList := t.issue.GetListAll()
 	for i := 0; i < len(issueList); i++ {
 		issueList[i].Title = "this is testcode"
 		if err := t.issue.Update(&issueList[i]); err != nil {
@@ -51,7 +51,7 @@ func (t *ModelIssueTest) TestUpdate() {
 }
 
 func (t *ModelIssueTest) TestGetList() {
-	issueList := t.issue.GetList()
+	issueList := t.issue.GetListAll()
 	if len(issueList) == 0 {
 		t.AssertNotFound()
 	}

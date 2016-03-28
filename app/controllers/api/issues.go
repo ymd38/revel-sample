@@ -40,8 +40,9 @@ func (c *ApiIssues) Show(id int) revel.Result {
 }
 
 //respones is list of issue.
-func (c *ApiIssues) List(q string) revel.Result {
-	issue_list := c.Issue.GetList()
+//TODO:limitでの並び替え
+func (c *ApiIssues) List(status, priority string) revel.Result {
+	issue_list := c.Issue.GetList(status, priority)
 	return c.Response(&Response{OK, issue_list})
 }
 

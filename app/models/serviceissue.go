@@ -62,7 +62,7 @@ func (si *ServiceIssue) CreateByIssueID(issueid int) error {
 func (si *ServiceIssue) CreateByServiceID(serviceid int) error {
 	var wg sync.WaitGroup
 	issue := new(Issue)
-	issue_list := issue.GetList() //TODO:抽出条件を設定
+	issue_list := issue.GetListAll() //TODO:抽出条件を設定
 
 	for i := 0; i < len(issue_list); i++ {
 		wg.Add(1)
